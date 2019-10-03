@@ -1,0 +1,752 @@
+# npm-installer-for-Android-GitHub-
+this is to be run in termux. Has been tested on Android 8.1.0 with successful successively success. USE AT YOUR OWN RISK DEVELOPER'S NOT RESPONSIBLE FOR  ANY DAMAGES OR LOSSES OF PRODUCT  Copyright 2019 Ronald E. Chapman for education use it anyway you want 
+open Termux and enter Command "yarn add it" if yarn is not installed simply use "pkg install yarn" to install run yarn add it proccesses  would be like this example
+
+yarn add it.  (Drop File Into Field would look like next example)
+
+  echo echo sudo support Gradle Wrapper         "gpu": "Adreno_(TM)_308",             
+'util-linux'                                "debug_playbackQuality": "large
+",                                 
+debug_playbackQuality    "debug_date": "Thu Oct 03 2019 
+01:31:11 GMT-0400 (Eastern Daylight  Time)"                              
+token `}'                          
+$ yarn add it                      
+yarn add v1.17.3                   
+warning package.json: No license fi
+eld                                
+warning package-lock.json found. Yo
+ur project contains lock files gene
+rated by tools other than Yarn. It 
+is advised not to mix package manag
+ers in order to avoid resolution in
+consistencies caused by unsynchroni
+zed lock files. To clear this warni
+ng, remove package-lock.json.      
+warning No license field           
+[1/4] Resolving packages...        
+[2/4] Fetching packages...         
+info fsevents@1.2.9: The platform "
+android" is incompatible with this 
+module.                            
+info "fsevents@1.2.9" is an optiona
+l dependency and failed compatibili
+ty check. Excluding it from install
+ation.                             
+[3/4] Linking dependencies...      
+[4/4] Building fresh packages...   
+success Saved lockfile.            
+warning No license field           
+success Saved 206 new dependencies.
+info Direct dependencies           
+├─ gulp@4.0.2                      
+└─ it@1.1.1                        
+info All dependencies              
+├─ ansi-colors@1.1.0               
+├─ ansi-gray@0.1.1                 
+├─ ansi-regex@2.1.1                
+├─ ansi-wrap@0.1.0                 
+├─ append-buffer@1.0.2             
+├─ archy@1.0.0                     
+├─ arr-filter@1.1.2                
+├─ arr-flatten@1.1.0               
+├─ array-each@1.0.1                
+├─ array-initial@1.1.0             
+├─ array-last@1.3.0                
+├─ array-sort@1.0.0                
+├─ assign-symbols@1.0.0            
+├─ async-each@1.0.3                
+├─ async-settle@1.0.0              
+├─ atob@2.1.2                      
+├─ bach@1.2.0                      
+├─ balanced-match@1.0.0            
+├─ base@0.11.2                     
+├─ binary-extensions@1.13.1        
+├─ brace-expansion@1.1.11          
+├─ braces@2.3.2                    
+├─ buffer-equal@1.0.0              
+├─ buffer-from@1.1.1               
+├─ cache-base@1.0.1                
+├─ chokidar@2.1.8                  
+├─ class-utils@0.3.6               
+├─ cliui@3.2.0                     
+├─ clone-buffer@1.0.0              
+├─ clone-stats@1.0.0               
+├─ clone@2.1.2                     
+├─ cloneable-readable@1.1.3        
+├─ code-point-at@1.1.0             
+├─ collection-map@1.0.0            
+├─ collection-visit@1.0.0          
+├─ concat-map@0.0.1                
+├─ concat-stream@1.6.2             
+├─ convert-source-map@1.6.0        
+├─ copy-descriptor@0.1.1           
+├─ copy-props@2.0.4                
+├─ core-util-is@1.0.2              
+├─ d@1.0.1                         
+├─ debug@2.6.9                     
+├─ decamelize@1.2.0                
+├─ decode-uri-component@0.2.0      
+├─ default-compare@1.0.0           
+├─ default-resolution@2.0.0        
+├─ define-properties@1.1.3         
+├─ duplexify@3.7.1                 
+├─ each-props@1.3.2                
+├─ end-of-stream@1.4.4             
+├─ error-ex@1.3.2                  
+├─ es5-ext@0.10.51                 
+├─ es6-iterator@2.0.3              
+├─ expand-brackets@2.1.4           
+├─ extglob@2.0.4                   
+├─ fancy-log@1.3.3                 
+├─ fill-range@4.0.0                
+├─ find-up@1.1.2                   
+├─ fined@1.2.0                     
+├─ flagged-respawn@1.0.1           
+├─ flush-write-stream@1.1.1        
+├─ for-in@1.0.2                    
+├─ fs-mkdirp-stream@1.0.0          
+├─ fs.realpath@1.0.0               
+├─ function-bind@1.1.1             
+├─ get-caller-file@1.0.3           
+├─ glob-stream@6.1.0               
+├─ glob-watcher@5.0.3              
+├─ global-modules@1.0.0            
+├─ global-prefix@1.0.2             
+├─ glogg@1.0.2                     
+├─ gulp-cli@2.2.0                  
+├─ gulp@4.0.2                      
+├─ gulplog@1.0.0                   
+├─ has-symbols@1.0.0               
+├─ has-value@1.0.0                 
+├─ has-values@1.0.0                
+├─ hosted-git-info@2.8.4           
+├─ inflight@1.0.6                  
+├─ ini@1.3.5                       
+├─ interpret@1.2.0                 
+├─ invert-kv@1.0.0                 
+├─ is-accessor-descriptor@1.0.0    
+├─ is-arrayish@0.2.1               
+├─ is-binary-path@1.0.1            
+├─ is-data-descriptor@1.0.0        
+├─ is-descriptor@1.0.2             
+├─ is-extglob@2.1.1                
+├─ is-fullwidth-code-point@1.0.0   
+├─ is-relative@1.0.0               
+├─ is-unc-path@1.0.0               
+├─ is-utf8@0.2.1                   
+├─ is-valid-glob@1.0.0             
+├─ isarray@1.0.0                   
+├─ isexe@2.0.0                     
+├─ it@1.1.1                        
+├─ json-stable-stringify-without-js
+onify@1.0.1                        
+├─ just-debounce@1.0.0             
+├─ kind-of@3.2.2                   
+├─ last-run@1.1.1                  
+├─ lazystream@1.0.0                
+├─ lcid@1.0.0                      
+├─ lead@1.0.0                      
+├─ liftoff@3.1.0                   
+├─ load-json-file@1.1.0            
+├─ map-cache@0.2.2                 
+├─ map-visit@1.0.0                 
+├─ matchdep@2.0.0                  
+├─ mixin-deep@1.3.2                
+├─ ms@2.0.0                        
+├─ mute-stdout@1.0.1               
+├─ nanomatch@1.2.13                
+├─ next-tick@1.0.0                 
+├─ normalize-package-data@2.5.0    
+├─ number-is-nan@1.0.1             
+├─ object-copy@0.1.0               
+├─ object-keys@1.1.1               
+├─ object.assign@4.1.0             
+├─ object.map@1.0.1                
+├─ object.pick@1.3.0               
+├─ object.reduce@1.0.1             
+├─ ordered-read-streams@1.0.1      
+├─ os-locale@1.4.0                 
+├─ parse-filepath@1.0.2            
+├─ parse-json@2.2.0                
+├─ parse-node-version@1.0.1        
+├─ parse-passwd@1.0.0              
+├─ pascalcase@0.1.1                
+├─ path-dirname@1.0.2              
+├─ path-exists@2.1.0               
+├─ path-parse@1.0.6                
+├─ path-root-regex@0.1.2           
+├─ path-root@0.1.1                 
+├─ path-type@1.1.0                 
+├─ pinkie@2.0.4                    
+├─ posix-character-classes@0.1.1   
+├─ pretty-hrtime@1.0.3             
+├─ pump@2.0.1                      
+├─ read-pkg-up@1.0.1               
+├─ read-pkg@1.1.0                  
+├─ readable-stream@2.3.6           
+├─ readdirp@2.2.1                  
+├─ rechoir@0.6.2                   
+├─ remove-bom-stream@1.2.0         
+├─ repeat-element@1.1.3            
+├─ replace-ext@1.0.0               
+├─ replace-homedir@1.0.0           
+├─ require-directory@2.1.1         
+├─ require-main-filename@1.0.1     
+├─ resolve-dir@1.0.1               
+├─ resolve-options@1.1.0           
+├─ resolve-url@0.2.1               
+├─ resolve@1.12.0                  
+├─ ret@0.1.15                      
+├─ semver-greatest-satisfied-range@
+1.1.0                              
+├─ semver@5.7.1                    
+├─ set-blocking@2.0.0              
+├─ set-value@2.0.1                 
+├─ snapdragon-node@2.1.1           
+├─ snapdragon-util@3.0.1           
+├─ source-map-resolve@0.5.2        
+├─ source-map-url@0.4.0            
+├─ source-map@0.5.7                
+├─ sparkles@1.0.1                  
+├─ spdx-correct@3.1.0              
+├─ spdx-exceptions@2.2.0           
+├─ split-string@3.1.0              
+├─ stack-trace@0.0.10              
+├─ static-extend@0.1.2             
+├─ stream-exhaust@1.0.2            
+├─ stream-shift@1.0.0              
+├─ string_decoder@1.1.1            
+├─ string-width@1.0.2              
+├─ strip-ansi@3.0.1                
+├─ strip-bom@2.0.0                 
+├─ sver-compat@1.5.0               
+├─ through2-filter@3.0.0           
+├─ through2@2.0.5                  
+├─ time-stamp@1.1.0                
+├─ to-absolute-glob@2.0.2          
+├─ to-object-path@0.3.0            
+├─ to-regex-range@2.1.1            
+├─ to-through@2.0.0                
+├─ type@1.2.0                      
+├─ typedarray@0.0.6                
+├─ unc-path-regex@0.1.2            
+├─ undertaker-registry@1.0.1       
+├─ undertaker@1.2.1                
+├─ union-value@1.0.1               
+├─ unique-stream@2.3.1             
+├─ unset-value@1.0.0               
+├─ upath@1.2.0                     
+├─ urix@0.1.0                      
+├─ use@3.1.1                       
+├─ util-deprecate@1.0.2            
+├─ v8flags@3.1.3                   
+├─ validate-npm-package-license@3.0
+.4                                 
+├─ vinyl-fs@3.0.3                  
+├─ vinyl-sourcemap@1.1.0           
+├─ which-module@1.0.0              
+├─ wrap-ansi@2.1.0                 
+├─ xtend@4.0.2                     
+├─ y18n@3.2.1                      
+├─ yargs-parser@5.0.0              
+└─ yargs@7.1.0                     
+Done in 43.12s.                    
+$   "debug_date": "Thu Oct 03 2019 
+01:31:11 GMT-0400 (Eastern Daylight  Time)"                            
+debug_date:: command not found     
+$   "debug_date": "Thu Oct 03 2019 
+01:31:11 GMT-0400 (Eastern Daylight  Time)"                            
+debug_date:: command not found     
+$ yarn add it                      
+yarn add v1.17.3                   
+warning package.json: No license fi
+eld                                
+warning package-lock.json found. Yo
+ur project contains lock files gene
+rated by tools other than Yarn. It 
+is advised not to mix package manag
+ers in order to avoid resolution in
+consistencies caused by unsynchroni
+zed lock files. To clear this warni
+ng, remove package-lock.json.      
+warning No license field           
+[1/4] Resolving packages...        
+[2/4] Fetching packages...         
+info fsevents@1.2.9: The platform "
+android" is incompatible with this 
+module.                            
+info "fsevents@1.2.9" is an optiona
+l dependency and failed compatibili
+ty check. Excluding it from install
+ation.                             
+[3/4] Linking dependencies...      
+[4/4] Building fresh packages...   
+warning No license field           
+success Saved 1 new dependency.    
+info Direct dependencies           
+└─ it@1.1.1                        
+info All dependencies              
+└─ it@1.1.1                        
+Done in 8.15s.                     
+$                                  
+Display all 454 possibilities? (y o
+r n)                               
+!                                  
+./                                 
+:                                  
+[                                  
+[[                                 
+]]                                 
+addpart                            
+alias                              
+am                                 
+apt                                
+apt-cache                          
+apt-config                         
+apt-get                            
+apt-key                            
+apt-mark                           
+arp                                
+awk                                
+b2sum                              
+base32                             
+base64                             
+basename                           
+basenc                             
+bash                               
+bg                                 
+bind                               
+blkdiscard                         
+blkid                              
+blkzone                            
+blockdev                           
+break                              
+builtin                            
+bunzip2                            
+busybox                            
+bzcat                              
+bzcmp                              
+bzdiff                             
+bzgrep                             
+bzip2                              
+bzip2recover                       
+bzless                             
+bzmore                             
+cal                                
+caller                             
+case                               
+cat                                
+cd                                 
+chcon                              
+chcpu                              
+chgrp                              
+chmod                              
+choom                              
+chown                              
+chroot                             
+chrt                               
+chsh                               
+cksum                              
+clear                              
+cmp                                
+col                                
+colcrt                             
+colrm                              
+column                             
+comm                               
+command                            
+command_not_found_handle           
+compgen                            
+complete                           
+compopt                            
+continue                           
+coproc                             
+coreutils                          
+cp                                 
+crond                              
+crontab                            
+csplit                             
+ctrlaltdel                         
+curl                               
+curl-config                        
+cut                                
+dalvikvm                           
+dash                               
+date                               
+dd                                 
+declare                            
+delpart                            
+df                                 
+diff                               
+diff3                              
+dir                                
+dircolors                          
+dirname                            
+dirs                               
+disown                             
+dmesg                              
+dnsdomainname                      
+do                                 
+done                               
+dos2unix                           
+dpkg                               
+dpkg-deb                           
+dpkg-divert                        
+dpkg-query                         
+dpkg-split                         
+dpkg-trigger                       
+du                                 
+dumpsexp                           
+echo                               
+ed                                 
+editor                             
+egrep                              
+elif                               
+else                               
+enable                             
+env                                
+esac                               
+eval                               
+exec                               
+exit                               
+expand                             
+export                             
+expr                               
+factor                             
+fallocate                          
+false                              
+fc                                 
+fg                                 
+fgrep                              
+fi                                 
+fincore                            
+find                               
+findfs                             
+flock                              
+fmt                                
+fold                               
+for                                
+free                               
+fsck.cramfs                        
+fsck.minix                         
+fsfreeze                           
+ftp                                
+ftpd                               
+ftpget                             
+ftpput                             
+function                           
+funzip                             
+fuser                              
+gawk                               
+gawklibpath_append                 
+gawklibpath_default                
+gawklibpath_prepend                
+gawkpath_append                    
+gawkpath_default                   
+gawkpath_prepend                   
+getopt                             
+getopts                            
+getprop                            
+gpg-error                          
+gpg-error-config                   
+gpgrt-config                       
+gpgv                               
+grep                               
+groups                             
+gulp                               
+gunzip                             
+gzexe                              
+gzip                               
+hardlink                           
+hash                               
+head                               
+help                               
+hexdump                            
+history                            
+hmac256                            
+hostname                           
+hwclock                            
+id                                 
+if                                 
+ifconfig                           
+in                                 
+inotifyd                           
+install                            
+ionice                             
+iostat                             
+ip                                 
+ipmaddr                            
+iptunnel                           
+isosize                            
+jobs                               
+join                               
+kill                               
+killall                            
+ldattach                           
+less                               
+lessecho                           
+lesskey                            
+let                                
+libgcrypt-config                   
+link                               
+linux32                            
+linux64                            
+ln                                 
+local                              
+logcat                             
+logger                             
+login                              
+logname                            
+logout                             
+look                               
+losetup                            
+ls                                 
+lscpu                              
+lsipc                              
+lsof                               
+lsusb                              
+lzcat                              
+lzcmp                              
+lzdiff                             
+lzegrep                            
+lzfgrep                            
+lzgrep                             
+lzless                             
+lzma                               
+lzmadec                            
+lzmainfo                           
+lzmore                             
+mac2unix                           
+make                               
+mapfile                            
+mcookie                            
+md5sum                             
+mii-tool                           
+mkdir                              
+mkfifo                             
+mkfs                               
+mkfs.bfs                           
+mkfs.cramfs                        
+mkfs.minix                         
+mknod                              
+mkswap                             
+mktemp                             
+more                               
+mount                              
+mpicalc                            
+mpstat                             
+mv                                 
+namei                              
+nameif                             
+ncursesw6-config                   
+netstat                            
+nice                               
+nl                                 
+nmeter                             
+node                               
+nohup                              
+npm                                
+nproc                              
+npx                                
+nsenter                            
+numfmt                             
+od                                 
+partx                              
+paste                              
+patch                              
+pathchk                            
+pcre-config                        
+pcre2-config                       
+peekfd                             
+pgrep                              
+pidof                              
+ping                               
+ping6                              
+pkg                                
+pkill                              
+plipconfig                         
+pm                                 
+pmap                               
+popd                               
+pr                                 
+printenv                           
+printf                             
+prlimit                            
+prtstat                            
+ps                                 
+pslog                              
+pstree                             
+ptx                                
+pushd                              
+pwd                                
+pwdx                               
+rarp                               
+read                               
+readarray                          
+readlink                           
+readonly                           
+readprofile                        
+realpath                           
+red                                
+rename                             
+renice                             
+reset                              
+resizepart                         
+return                             
+rev                                
+rm                                 
+rmdir                              
+route                              
+rtcwake                            
+runcon                             
+runsv                              
+runsvdir                           
+script                             
+scriptreplay                       
+sdiff                              
+sed                                
+select                             
+sendmail                           
+seq                                
+set                                
+setarch                            
+setsid                             
+setterm                            
+settings                           
+sh                                 
+sha1sum                            
+sha224sum                          
+sha256sum                          
+sha384sum                          
+sha512sum                          
+shift                              
+shopt                              
+shred                              
+shuf                               
+slattach                           
+sleep                              
+sort                               
+source                             
+split                              
+start-stop-daemon                  
+stat                               
+stdbuf                             
+stty                               
+su                                 
+sum                                
+suspend                            
+sv                                 
+svlogd                             
+swaplabel                          
+sync                               
+sysctl                             
+tac                                
+tail                               
+tar                                
+taskset                            
+tcpsvd                             
+tee                                
+telnet                             
+termux-fix-shebang                 
+termux-info                        
+termux-open                        
+termux-open-url                    
+termux-reload-settings             
+termux-setup-storage               
+termux-wake-lock                   
+termux-wake-unlock                 
+test                               
+tftp                               
+then                               
+time                               
+timeout                            
+times                              
+tload                              
+top                                
+touch                              
+tr                                 
+trap                               
+true                               
+truncate                           
+tset                               
+tsort                              
+tty                                
+type                               
+typeset                            
+ul                                 
+ulimit                             
+umask                              
+umount                             
+unalias                            
+uname                              
+uname26                            
+uncompress                         
+unexpand                           
+uniq                               
+unix2dos                           
+unix2mac                           
+unlink                             
+unlzma                             
+unset                              
+unshare                            
+until                              
+unxz                               
+unzip                              
+unzipsfx                           
+update-alternatives                
+uptime                             
+usleep                             
+vdir                               
+vi                                 
+view                               
+vim                                
+vimdiff                            
+vimtutor                           
+vmstat                             
+wait                               
+watch                              
+wc                                 
+wdctl                              
+wget                               
+whereis                            
+which                              
+while                              
+whoami                             
+whois                              
+wipefs                             
+xargs                              
+xdg-open                           
+xxd                                
+xz                                 
+xzcat                              
+xzcmp                              
+xzdec                              
+xzdiff                             
+xzegrep                            
+xzfgrep                            
+xzgrep                             
+xzless                             
+xzmore                             
+yarn                               
+yat2m                              
+yes                                
+zcat                               
+zcmp                               
+zdiff                              
+zegrep                             
+zfgrep                             
+zforce                             
+zgrep                              
+zipgrep                            
+zipinfo                            
+zless                              
+zmore                              
+znew                               
+zramctl                            
+{                                  
+}                          (Next would be to add commany again to update the dependencies next Example)
+ 
+yarn add it 
+
+yarn addaa it"
+
