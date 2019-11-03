@@ -1,0 +1,1263 @@
+Digital Millennium Copyright Act (DMCA) Policy 
+Digital Millennium Copyright Act (DMCA) Policy 
+Luckypatchers.com (‘Lucky Patchers’) is an Online Service Provider under Title II of the Digital Millennium Copyright Act, 17 U.S.C. Section 512 (‘DMCA’). We provide legal copyright owners with the ability to self-publish on the internet by uploading, storing and displaying various media utilizing our services. We take copyright violation very seriously and will vigorously protect the rights of legal copyright owners. If you are the copyright owner of content which appears on the Luckypatchers.com website (the ‘Site’) and you did not authorize the use of the content you must notify “Lucky patchers” in writing in order for us to identify the allegedly infringing content and take action. 
+I. DESIGNATED AGENT 
+“Lucky patchers” designated agent to receive notification of alleged infringement under the DMCA is: Attn: Copyright Agent Contact Us Upon receipt of proper notification of claimed infringement, “Lucky Patchers” will follow the procedures outlined herein and in the DMCA. 
+II. COMPLAINT NOTICE PROCEDURES FOR COPYRIGHT OWNERS 
+The following elements must be included in your copyright infringement claim: An electronic or physical signature of the copyright owner or a person authorized to act on behalf of the owner of an exclusive right that is allegedly infringed. Identification of the copyrighted work claimed to have been infringed, or if multiple copyrighted works at a single online site are covered by a single notice, a representative list of such works at that site. Identification of the material that is claimed to be infringing or to be the subject of infringing activity and that is to be removed or access to which is to be disabled, and information reasonably sufficient to permit the Company to locate the material. Information reasonably sufficient to permit the Company to contact the complaining party, such as an address, telephone number, and, if available, an electronic mail address at which the complaining party may be contacted. A statement that the complaining party has a good faith belief that use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law. A statement that the information in the notice is accurate, and under penalty of perjury, that the complaining party is authorized to act on behalf of the owner of an exclusive right that is allegedly infringed. Failure to include all of the above information may result in a delay of the processing or the DCMA notification. Please also note that under applicable law, 17 U.S.C. 512(f), any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability. 
+III. Lucky Patchers RESPONSE 
+“Lucky Patchers” will follow the procedures provided in the DCMA, which prescribe a notice and takedown procedure, subject to the user’s right to submit a counter-notification claiming lawful use of the disabled works. It is expected that all users of any part of the Site will comply with applicable copyright laws. However, if “Lucky Patchers” receives proper notification of claimed copyright infringement, it will respond expeditiously by removing, or disabling access to, the material that is claimed to be infringing or to be the subject of infringing activity, provided all such claims have been investigated and determined to be valid by “Lucky Patchers” in Lucky Patchers’s sole and absolute discretion. “Lucky Patchers” will comply with the appropriate provisions of the DMCA in the event a counter notification is received. 
+IV. COUNTER-NOTIFICATION 
+Pursuant to the Terms of Service Agreement to which all users of LuckyPatchers.com agree to prior to using LuckyPatchers.com, all users are required to use only lawfully-acquired creative works as website content, and a user’s access may be disabled upon receipt of notice that infringing material has been submitted. “Lucky Patchers” also respects the legitimate interests of users in utilizing media content lawfully, being permitted to present a response to claims of infringement, and obtaining timely restoration of access to content that has been disabled due to a copyright complaint. To write a proper counter-notification, please provide the following information: 
+State that access to your content was disabled due to operation of the notice and takedown procedure. 
+Identify the material that has been removed and designate its URL prior to removal. 
+State, under penalty of perjury: 
+Your name, address, and telephone number. 
+That you ‘have a good faith belief that the material was removed or disabled as result of mistake or misidentification of the material. 
+That you ‘consent to the jurisdiction of the Federal District Court for the judicial district in which the address is located. 
+To exercise your DMCA rights, you must send your counter-notification to the designated agent for “Lucky Patchers”, whose contact information is:
+Attn: Copyright Agent
+Email: androikinfo@gmail.com 
+V. REPEAT INFRINGERS 
+Under appropriate circumstances, “Lucky Patchers” may, in its discretion, terminate authorization of users of its system or network who are repeat infringers. 
+VI. ACCOMMODATION OF STANDARD TECHNICAL MEASURES 
+It is “Lucky Patchers” policy to accommodate and not interfere with standard technical measures it determines are reasonable under the circumstances, i.e., technical measures that are used by copyright owners to identify or protect copyrighted worksInstall package install Upgrade packagesupgradeto additionalrepositoriesRootUnstableunstable-repo  * X11:      pkg install x11-repo 
+Report issues#!/bin/sh
+##
+##  Script for preparing & launching build environment.
+##
+##  Copyright 2019 Leonid Plyushch <leonid.plyushch@gmail.com>
+##
+##  Licensed under the Apache License, Version 2.0 (the "License");
+##  you may not use this file except in compliance with the License.
+##  You may obtain a copy of the License at
+##
+##    http://www.apache.org/licenses/LICENSE-2.0
+##
+##  Unless required by applicable law or agreed to in writing, software
+##  distributed under the License is distributed on an "AS IS" BASIS,
+##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+##  See the License for the specific language governing permissions and
+##  limitations under the License.
+## 
+set -e -u 
+SCRIPT_NAME=$(basename "$0")
+REPOROOT=$(dirname "$(realpath "$0")") 
+IMAGE_NAME="xeffyr/termux-advanced-builder" 
+LOCK_FILE="/tmp/.termux-x11-builder.lck"
+CONTAINER_NAME="termux-x11-buildenv"
+BUILD_ENVIRONMENT="termux-packages" 
+cd "$REPOROOT" 
+if [ ! -e "$LOCK_FILE" ]; then 	touch "$LOCK_FILE"
+fi 
+(flock -n 3 || exit 0 	docker stop "$CONTAINER_NAME" >/dev/null 2>&1 || true  	echo "[*] Setting up repository submodules..." 	git submodule deinit --all --force 	git submodule update --init  	echo "[*] Copying packages from './packages' to build environment..." 	for pkg in $(find "$REPOROOT"/packages -mindepth 1 -maxdepth 1 -type d); do  	if [ ! -d "${REPOROOT}/${BUILD_ENVIRONMENT}/packages/$(basename "$pkg")" ]; then   	cp -a "$pkg" "${REPOROOT}/${BUILD_ENVIRONMENT}"/packages/  	else   	echo "[!] Package '$(basename "$pkg")' already exists in build environment. Skipping."  	fi 	done
+) 3< "$LOCK_FILE" 
+(flock -n 3 || true 	echo "[*] Running container '$CONTAINER_NAME' from image '$IMAGE_NAME'..." 	if ! docker start "$CONTAINER_NAME" > /dev/null 2>&1; then  	echo "Creating new container..."  	docker run \   	--detach \   	--name "$CONTAINER_NAME" \   	--volume "${REPOROOT}/${BUILD_ENVIRONMENT}:/home/builder/packages" \   	--tty \   	"$IMAGE_NAME"   	if [ "$(id -u)" -ne 0 ] && [ "$(id -u)" -ne 1000 ]; then   	echo "Changed builder uid/gid... (this may take a while)"   	docker exec --tty "$CONTAINER_NAME" sudo chown -R $(id -u) "/home/builder"   	docker exec --tty "$CONTAINER_NAME" sudo chown -R $(id -u) /data   	docker exec --tty "$CONTAINER_NAME" sudo usermod -u $(id -u) builder   	docker exec --tty "$CONTAINER_NAME" sudo groupmod -g $(id -g) builder  	fi 	fi  	if [ $# -ge 1 ]; then  	docker exec --interactive --tty "$CONTAINER_NAME" "$@" 	else  	docker exec --interactive --tty "$CONTAINER_NAME" bash 	fi
+) 3< "$LOCK_FILE"          
+<metapackage xmlns:os="http://opensuse.org/Standards/One_Click_Install" xmlns="http://opensuse.org/Standards/One_Click_Install">   <group>     <repositories>       <repository recommended="true">         <name>openSUSE:Leap:15.1:Update</name>         <summary>Online updates for openSUSE Leap:15.1</summary>         <description>This project is releasing the official updates for openSUSE Leap:15.1.</description>         <url>http://download.opensuse.org/ports/update/leap/15.1/</url>       </repository>       <repository recommended="true">         <name>openSUSE:Leap:15.1:ARM</name>         <summary></summary>         <description></description>         <url>http://download.opensuse.org/repositories/openSUSE:/Leap:/15.1:/ARM/ports/</url>       </repository>       <repository recommended="true">         <name>openSUSE:Leap:15.1:PowerPC</name>         <summary></summary>         <description></description>         <url>http://download.opensuse.org/repositories/openSUSE:/Leap:/15.1:/PowerPC/ports/</url>       </repository>       <repository recommended="false">         <name>openSUSE:Leap:15.1</name>         <summary>openSUSE Leap 15.1</summary>         <description></description>         <url>http://download.opensuse.org/distribution/leap/15.1/repo/oss/</url>       </repository>     </repositories>     <software>       <item>         <name>MozillaThunderbird</name>         <summary>The Stand-Alone Mozilla Mail Component</summary>         <description>Mozilla Thunderbird is a redesign of the Mozilla Mail component. It is
+written using the XUL user interface language and designed to be
+cross-platform. It is a stand-alone application instead of part of the
+Mozilla application suite.</description>       </item>     </software>   </group>
+</metapackage>        
+#!/bin/sh
+##
+##  Script for preparing & launching build environment.
+##
+##  Copyright 2019 Leonid Plyushch <leonid.plyushch@gmail.com>
+##
+##  Licensed under the Apache License, Version 2.0 (the "License");
+##  you may not use this file except in compliance with the License.
+##  You may obtain a copy of the License at
+##
+##    http://www.apache.org/licenses/LICENSE-2.0
+##
+##  Unless required by applicable law or agreed to in writing, software
+##  distributed under the License is distributed on an "AS IS" BASIS,
+##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+##  See the License for the specific language governing permissions and
+##  limitations under the License.
+## 
+set -e -u 
+SCRIPT_NAME=$(basename "$0")
+REPOROOT=$(dirname "$(realpath "$0")") 
+IMAGE_NAME="xeffyr/termux-advanced-builder" 
+LOCK_FILE="/tmp/.termux-x11-builder.lck"
+CONTAINER_NAME="termux-x11-buildenv"
+BUILD_ENVIRONMENT="termux-packages" 
+cd "$REPOROOT" 
+if [ ! -e "$LOCK_FILE" ]; then 	touch "$LOCK_FILE"
+fi 
+(flock -n 3 || exit 0 	docker stop "$CONTAINER_NAME" >/dev/null 2>&1 || true  	echo "[*] Setting up repository submodules..." 	git submodule deinit --all --force 	git submodule update --init  	echo "[*] Copying packages from './packages' to build environment..." 	for pkg in $(find "$REPOROOT"/packages -mindepth 1 -maxdepth 1 -type d); do  	if [ ! -d "${REPOROOT}/${BUILD_ENVIRONMENT}/packages/$(basename "$pkg")" ]; then   	cp -a "$pkg" "${REPOROOT}/${BUILD_ENVIRONMENT}"/packages/  	else   	echo "[!] Package '$(basename "$pkg")' already exists in build environment. Skipping."  	fi 	done
+) 3< "$LOCK_FILE" 
+(flock -n 3 || true 	echo "[*] Running container '$CONTAINER_NAME' from image '$IMAGE_NAME'..." 	if ! docker start "$CONTAINER_NAME" > /dev/null 2>&1; then  	echo "Creating new container..."  	docker run \   	--detach \   	--name "$CONTAINER_NAME" \   	--volume "${REPOROOT}/${BUILD_ENVIRONMENT}:/home/builder/packages" \   	--tty \   	"$IMAGE_NAME"   	if [ "$(id -u)" -ne 0 ] && [ "$(id -u)" -ne 1000 ]; then   	echo "Changed builder uid/gid... (this may take a while)"   	docker exec --tty "$CONTAINER_NAME" sudo chown -R $(id -u) "/home/builder"   	docker exec --tty "$CONTAINER_NAME" sudo chown -R $(id -u) /data   	docker exec --tty "$CONTAINER_NAME" sudo usermod -u $(id -u) builder   	docker exec --tty "$CONTAINER_NAME" sudo groupmod -g $(id -g) builder  	fi 	fi  	if [ $# -ge 1 ]; then  	docker exec --interactive --tty "$CONTAINER_NAME" "$@" 	else  	docker exec --interactive --tty "$CONTAINER_NAME" bash 	fi
+) 3< "$LOCK_FILE"          
+<metapackage xmlns:os="http://opensuse.org/Standards/One_Click_Install" xmlns="http://opensuse.org/Standards/One_Click_Install">   <group>     <repositories>       <repository recommended="true">         <name>openSUSE:Leap:15.1:Update</name>         <summary>Online updates for openSUSE Leap:15.1</summary>         <description>This project is releasing the official updates for openSUSE Leap:15.1.</description>         <url>http://download.opensuse.org/ports/update/leap/15.1/</url>       </repository>       <repository recommended="true">         <name>openSUSE:Leap:15.1:ARM</name>         <summary></summary>         <description></description>         <url>http://download.opensuse.org/repositories/openSUSE:/Leap:/15.1:/ARM/ports/</url>       </repository>       <repository recommended="true">         <name>openSUSE:Leap:15.1:PowerPC</name>         <summary></summary>         <description></description>         <url>http://download.opensuse.org/repositories/openSUSE:/Leap:/15.1:/PowerPC/ports/</url>       </repository>       <repository recommended="false">         <name>openSUSE:Leap:15.1</name>         <summary>openSUSE Leap 15.1</summary>         <description></description>         <url>http://download.opensuse.org/distribution/leap/15.1/repo/oss/</url>       </repository>     </repositories>     <software>       <item>         <name>MozillaThunderbird</name>         <summary>The Stand-Alone Mozilla Mail Component</summary>         <description>Mozilla Thunderbird is a redesign of the Mozilla Mail component. It is
+written using the XUL user interface language and designed to be
+cross-platform. It is a stand-alone application instead of part of the
+Mozilla application suite.</description>       </item>     </software>   </group>
+</metapackage>        
+#!/bin/sh
+##
+##  Script for preparing & launching build environment.
+##
+##  Copyright 2019 Leonid Plyushch <leonid.plyushch@gmail.com>
+##
+##  Licensed under the Apache License, Version 2.0 (the "License");
+##  you may not use this file except in compliance with the License.
+##  You may obtain a copy of the License at
+##
+##    http://www.apache.org/licenses/LICENSE-2.0
+##
+##  Unless required by applicable law or agreed to in writing, software
+##  distributed under the License is distributed on an "AS IS" BASIS,
+##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+##  See the License for the specific language governing permissions and
+##  limitations under the License.
+## 
+set -e -u 
+SCRIPT_NAME=$(basename "$0")
+REPOROOT=$(dirname "$(realpath "$0")") 
+IMAGE_NAME="xeffyr/termux-advanced-builder" 
+LOCK_FILE="/tmp/.termux-x11-builder.lck"
+CONTAINER_NAME="termux-x11-buildenv"
+BUILD_ENVIRONMENT="termux-packages" 
+cd "$REPOROOT" 
+if [ ! -e "$LOCK_FILE" ]; then 	touch "$LOCK_FILE"
+fi 
+(flock -n 3 || exit 0 	docker stop "$CONTAINER_NAME" >/dev/null 2>&1 || true  	echo "[*] Setting up repository submodules..." 	git submodule deinit --all --force 	git submodule update --init  	echo "[*] Copying packages from './packages' to build environment..." 	for pkg in $(find "$REPOROOT"/packages -mindepth 1 -maxdepth 1 -type d); do  	if [ ! -d "${REPOROOT}/${BUILD_ENVIRONMENT}/packages/$(basename "$pkg")" ]; then   	cp -a "$pkg" "${REPOROOT}/${BUILD_ENVIRONMENT}"/packages/  	else   	echo "[!] Package '$(basename "$pkg")' already exists in build environment. Skipping."  	fi 	done
+) 3< "$LOCK_FILE" 
+(flock -n 3 || true 	echo "[*] Running container '$CONTAINER_NAME' from image '$IMAGE_NAME'..." 	if ! docker start "$CONTAINER_NAME" > /dev/null 2>&1; then  	echo "Creating new container..."  	docker run \   	--detach \   	--name "$CONTAINER_NAME" \   	--volume "${REPOROOT}/${BUILD_ENVIRONMENT}:/home/builder/packages" \   	--tty \   	"$IMAGE_NAME"   	if [ "$(id -u)" -ne 0 ] && [ "$(id -u)" -ne 1000 ]; then   	echo "Changed builder uid/gid... (this may take a while)"   	docker exec --tty "$CONTAINER_NAME" sudo chown -R $(id -u) "/home/builder"   	docker exec --tty "$CONTAINER_NAME" sudo chown -R $(id -u) /data   	docker exec --tty "$CONTAINER_NAME" sudo usermod -u $(id -u) builder   	docker exec --tty "$CONTAINER_NAME" sudo groupmod -g $(id -g) builder  	fi 	fi  	if [ $# -ge 1 ]; then  	docker exec --interactive --tty "$CONTAINER_NAME" "$@" 	else  	docker exec --interactive --tty "$CONTAINER_NAME" bash 	fi
+) 3< "$LOCK_FILE"          
+<metapackage xmlns:os="http://opensuse.org/Standards/One_Click_Install" xmlns="http://opensuse.org/Standards/One_Click_Install">   <group>     <repositories>       <repository recommended="true">         <name>openSUSE:Leap:15.1:Update</name>         <summary>Online updates for openSUSE Leap:15.1</summary>         <description>This project is releasing the official updates for openSUSE Leap:15.1.</description>         <url>http://download.opensuse.org/ports/update/leap/15.1/</url>       </repository>       <repository recommended="true">         <name>openSUSE:Leap:15.1:ARM</name>         <summary></summary>         <description></description>         <url>http://download.opensuse.org/repositories/openSUSE:/Leap:/15.1:/ARM/ports/</url>       </repository>       <repository recommended="true">         <name>openSUSE:Leap:15.1:PowerPC</name>         <summary></summary>         <description></description>         <url>http://download.opensuse.org/repositories/openSUSE:/Leap:/15.1:/PowerPC/ports/</url>       </repository>       <repository recommended="false">         <name>openSUSE:Leap:15.1</name>         <summary>openSUSE Leap 15.1</summary>         <description></description>         <url>http://download.opensuse.org/distribution/leap/15.1/repo/oss/</url>       </repository>     </repositories>     <software>       <item>         <name>MozillaThunderbird</name>         <summary>The Stand-Alone Mozilla Mail Component</summary>         <description>Mozilla Thunderbird is a redesign of the Mozilla Mail component. It is
+written using the XUL user interface language and designed to be
+cross-platform. It is a stand-alone application instead of part of the
+Mozilla application suite.</description>       </item>     </software>   </group>
+</metapackage>        
+#!/bin/sh
+##
+##  Script for preparing & launching build environment.
+##
+##  Copyright 2019 Leonid Plyushch <leonid.plyushch@gmail.com>
+##
+##  Licensed under the Apache License, Version 2.0 (the "License");
+##  you may not use this file except in compliance with the License.
+##  You may obtain a copy of the License at
+##
+##    http://www.apache.org/licenses/LICENSE-2.0
+##
+##  Unless required by applicable law or agreed to in writing, software
+##  distributed under the License is distributed on an "AS IS" BASIS,
+##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+##  See the License for the specific language governing permissions and
+##  limitations under the License.
+## 
+set -e -u 
+SCRIPT_NAME=$(basename "$0")
+REPOROOT=$(dirname "$(realpath "$0")") 
+IMAGE_NAME="xeffyr/termux-advanced-builder" 
+LOCK_FILE="/tmp/.termux-x11-builder.lck"
+CONTAINER_NAME="termux-x11-buildenv"
+BUILD_ENVIRONMENT="termux-packages" 
+cd "$REPOROOT" 
+if [ ! -e "$LOCK_FILE" ]; then 	touch "$LOCK_FILE"
+fi 
+(flock -n 3 || exit 0 	docker stop "$CONTAINER_NAME" >/dev/null 2>&1 || true  	echo "[*] Setting up repository submodules..." 	git submodule deinit --all --force 	git submodule update --init  	echo "[*] Copying packages from './packages' to build environment..." 	for pkg in $(find "$REPOROOT"/packages -mindepth 1 -maxdepth 1 -type d); do  	if [ ! -d "${REPOROOT}/${BUILD_ENVIRONMENT}/packages/$(basename "$pkg")" ]; then   	cp -a "$pkg" "${REPOROOT}/${BUILD_ENVIRONMENT}"/packages/  	else   	echo "[!] Package '$(basename "$pkg")' already exists in build environment. Skipping."  	fi 	echo start job
+) 3< "$LOCK_FILE" 
+(flock -n 3 || true 	echo "[*] Running container '$CONTAINER_NAME' from image '$IMAGE_NAME'..." 	if ! docker start "$CONTAINER_NAME" > /dev/null 2>&1; then  	echo "Creating new container..."  	docker run \   	--detach \   	--name "$CONTAINER_NAME" \   	--volume "${REPOROOT}/${BUILD_ENVIRONMENT}:/home/builder/packages" \   	--tty \   	"$IMAGE_NAME"
+echo start job  	if [ "$(id -u)" -ne 0 ] && [ "$(id -u)" -ne 1000 ]; then   	echo "Changed builder uid/gid... (this may take a while)"   	docker exec --tty "$CONTAINER_NAME" sudo chown -R $(id -u) "/home/builder"   	docker exec --tty "$CONTAINER_NAME" sudo chown -R $(id -u) /data   	docker exec --tty "$CONTAINER_NAME" sudo usermod -u $(id -u) builder   	docker exec --tty "$CONTAINER_NAME" sudo groupmod -g $(id -g) builder  	fi 	fi
+echo start job 	if [ $# -ge 1 ]; then  	docker exec --interactive --tty "$CONTAINER_NAME" "$@" 	else  	docker exec --interactive --tty "$CONTAINER_NAME" bash 	fi
+) 3< "$LOCK_FILE" 
+echo start job        
+<metapackage xmlns:os="http://opensuse.org/Standards/One_Click_Install" xmlns="http://opensuse.org/Standards/One_Click_Install">   <group>     <repositories>       <repository recommended="true">         <name>openSUSE:Leap:15.1:Update</name>         <summary>Online updates for openSUSE Leap:15.1</summary>         <description>This project is releasing the official updates for openSUSE Leap:15.1.</description>         <url>http://download.opensuse.org/ports/update/leap/15.1/</url>       </repository>       <repository recommended="true">         <name>openSUSE:Leap:15.1:ARM</name>         <summary></summary>         <description></description>         <url>http://download.opensuse.org/repositories/openSUSE:/Leap:/15.1:/ARM/ports/</url>       </repository>       <repository recommended="true">         <name>openSUSE:Leap:15.1:PowerPC</name>         <summary></summary>         <description></description>         <url>http://download.opensuse.org/repositories/openSUSE:/Leap:/15.1:/PowerPC/ports/</url>       </repository>       <repository recommended="false">         <name>openSUSE:Leap:15.1</name>         <summary>openSUSE Leap 15.1</summary>         <description></description>         <url>http://www.apache.org/licenses/LICENSE http://download.opensuse.org/distribution/leap/15.1/repo/oss/</url>       </repository>     </repositories>     <software>       <item>         <name>MozillaThunderbird</name>         <summary>The Stand-Alone Mozilla Mail Component</summary>         <description>Mozilla Thunderbird is a redesign of the Mozilla Mail component. It is
+written using the XUL user interface language and designed to be
+cross-platform. It is a stand-alone application instead of part of the
+Mozilla application suite.</description>       </item>     </software>   </group>
+</>
+https://metapackage.com/linux64/bin/shScript&BuildEnvironment.
+##
+##  Copyright 2019 Leonid Plyushch <leonid.p
+lyushch@gmail.com>
+##
+##  Licensed under the Apache License, Versi
+on 2.0 (the "License");
+##  you may not use this file except in comp
+liance with the License.
+##  You may obtain a copy of the License at
+##
+##    
+-2.0
+##
+##  Unless required by applicable law or agr
+eed to in writing, software
+##  distributed under the License is distr$ 
+ibuted on an "AS IS" BASIS,
+##  WITHOUT WARRANTIES OR CONDITIONS OF ANY 
+KIND, either express or implied.
+##  See the License for the specific languag
+e governing permissions and
+##  limitations under the License.
+## 
+set -e -u 
+SCRIPT_NAME=$(bas$ ename "$0")
+REPOROOT=$(dirname "$(realpath "$0")") 
+IMAGE_NAME="xeffyr/termux-advanced-builder" 
+LOCK_FILE="/tmp/.termux-x11-builder.lck"
+CONTAINER_NAME="termux-x11-buildenv"
+BUILD_ENVIRONMENT="termux-packages" 
+cd "$REPOROOT" 
+if [ ! -e "$LOC$ K_FILE" ]; then         touch "$LOCK_FILE"
+fi 
+(flock -n 3 || exit 0         docker stop "$CONTAINER_NAME" >/dev/
+null 2>&1 || true          echo "[*] Setting up repository subm
+odules..."         git submodule deinit --all --force         git submodule update --init          echo "[*$ ] Copying packages from '.
+/packages' to build environment..."         for pkg in $(find "$REPOROOT"/packag
+es -mindepth 1 -maxdepth 1 -type d); do                 if [ ! -d "${REPOROOT}/${BUI
+LD_ENVIRONMENT}/packages/$(basename "$pkg")"  ]; then                         cp -a "$pkg" "${REPO
+ROOT}$ /${BUILD_ENVIRONMENT}"/packages/                 else                         echo "[!] Package '$
+(basename "$pkg")' already exists in build e
+nvironment. Skipping."                 fi         done
+) 3< "$LOCK_FILE" 
+(flock -n 3 || true         echo "[*] Running container '$CONTAI
+NER_NAME' from image '$IM$ AGE_NAME'..."         if ! docker start "$CONTAINER_NAME" 
+> /dev/null 2>&1; then                 echo "Creating new container
+..."                 docker run \                         --detach \                         --name "$CONTAINER_N
+AME" \                         --volume "${REPOROOT
+}/${BUILD_ENVIRONMENT}:/home/builder/package
+s" \                 $       --tty \                         "$IMAGE_NAME"                  if [ "$(id -u)" -ne 0 ] && [  "$(id -u)" -ne 1000 ]; then                         echo "Changed builde
+r uid/gid... (this may take a while)"                         docker exec --tty "$
+CONTAINER_NAME" sudo chown -R $(id -u) "/hom
+e/builder"                         docker exec --tty "$
+CONTAINER_NAME" sudo chown -R $(id -u) /data                         docker exec --tty "$
+CONTAINER_NAME" sudo usermod -u $ $(id -u) b
+uilder                         docker exec --tty "$
+CONTAINER_NAME" sudo groupmod -g $(id -g) bu
+ilder                 fi         fi          if [ $# -ge 1 ]; then                 docker exec --interactive --
+tty "$CONTAINER_NAME" "$@"         else                 docker exec --interactive --
+tty "$CONTAINER_NAME" bash$         fi
+) 3< "$LOCK_FILE"          
+<metapackage xmlns:os="http://opensuse.org/S
+tandards/One_Click_Install" xmlns="http://op
+ensuse.org/Standards/One_Click_Install">   <group>     <repositories>       <repository recommended="true">         <name$ >openSUSE:Leap:15.1:Update</n
+ame>         <summary>Online updates for openSUSE  Leap:15.1</summary>         <description>This project is releasi
+ng the official updates for openSUSE Leap:15
+.1.</description>         <url>http://download.opensuse.org/po
+r$ ts/update/leap/15.1/</url>       </repository>       <repository recommended="true">         <name>openSUSE:Leap:15.1:ARM</name>         <summary></summary>         <description></description>         <url>http://download.opensuse.org/re
+positor$ ies/openSUSE:/Leap:/15.1:/ARM/ports
+/</url>       </repository>       <repository recommended="true">         <name>openSUSE:Leap:15.1:PowerPC</na
+me>         <summary></summary>         <description></description>         <url>http://download.ope$ nsuse.org/
+repositories/openSUSE:/Leap:/15.1:/PowerPC/p
+orts/</url>       </repository>       <repository recommended="false">         <name>openSUSE:Leap:15.1</name>         <summary>openSUSE Leap 15.1</summary
+>         <description></description>$         <url>http://download.opensuse.org/di
+stribution/leap/15.1/repo/oss/</url>       </repository>     </repositories>     <software>       <item>         <name>MozillaThunderbird</name>         <summary>The Stand-Alone Mozilla Mai
+l Compone$ nt</summary>         <description>Mozilla Thunderbird is 
+a redesign of the Mozilla Mai$ $ $ $ $ $ l c
+omponent. It is
+written using the XUL user interface languag
+e and designed to be
+cross-platform. It is a stand-alone applicat
+ion instead of part of the
+Mozilla application suite.</description>       </item>     </software>   </group>
+</metapackage>        
+#!/bin/sh
+##
+##  Script for preparing & launching build e
+nvironment.
+##
+##  Copyright 2019 Leonid Plyushch <leonid.p
+lyushch@gmail.com>
+##
+##  Licensed under the Apache License, Versi
+on 2.0 (the "License");
+##  you may not use this file except in comp
+liance with the License.
+##  You may obtain a copy of the License at
+##
+##    http://www.apache.org/licenses/LICENSE
+-2.0
+##
+##  Unless required by applicable law or agr
+eed to in writing, software
+##  distributed under the License is basenam
+e: missing operand
+Try 'basename --help' for more information.
+$ REPOROOT=$(dirname "$(realpath "$0")")
+distributed on an "AS IS" BASIS,
+##  WI$
+$ IMAGE_NAME="xeffyr/termux-advanced-builder
+"
+$
+$ LOCK_FILE="/tmp/.termux-x11-builder.lck"
+$ CONTAINER_NAME="termux-x11-buildenv"
+$ BUILD_ENVIRONMENT="termux-packages"
+$
+$ cd "$REPOROOT"
+$
+$ if [ ! -e "$LOCK_FILE" ]; then
+> touch "$LOCK_FILE"
+> fi
+touch: cannot touch '/tmp/.termux-x11-builde
+r.lck': No such file or directory
+$
+$ (flock -n 3 || exit 0
+> docker stop "$CONTAINER_NAME" >/dev/null 2
+>&1 || true
+>
+> echo "[*] Setting up repository submodules
+..."
+> git submodule deinit --all --force
+> git submodule update --init
+>
+d> echo "[*] Copying packages from './packag
+es' to build environment..."
+> for pkg in $(find "$REPOROOT"/packages -mi
+ndepth 1 -maxdepth 1 -type d); do
+>
+Display all 1021 possibilities? (y or n)
+!
+./
+2to3
+2to3-3.7
+:
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+[[
+]]
+__expand_tilde_by_ref
+__get_cword_at_cursor_by_ref
+__load_completion
+__ltrim_colon_completions
+__parse_options
+__reassemble_comp_words_by_ref
+_allowed_groups
+_allowed_users
+_available_interfaces
+_cd
+_cd_devices
+_command
+_command_offset
+_complete_as_root
+_completion_loader
+_configured_interfaces
+_count_args
+_dvd_devices
+_expand
+_filedir
+_filedir_xspec
+_fstypes
+_get_comp_words_by_ref
+_get_cword
+_get_first_arg
+_get_pword
+_gids
+_have
+_included_ssh_config_files
+_init_completion
+_installed_modules
+_ip_addresses
+_kernel_versions
+_known_hosts
+_known_hosts_real
+_longopt
+_mac_addresses
+_minimal
+_modules
+_ncpus
+_parse_help
+_parse_usage
+_pci_ids
+_pgids
+> VIRONMENT}/packages/$(basename "$pkg")" ];  then
+>
+Display all 1021 possibilities? (y or n)
+!
+./
+2to3
+2to3-3.7
+:
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+[[
+]]
+__expand_tilde_by_ref
+__get_cword_at_cursor_by_ref
+__load_completion
+__ltrim_colon_completions
+__parse_options
+__reassemble_comp_words_by_ref
+_allowed_groups
+_allowed_users
+_available_interfaces
+_cd
+_cd_devices
+_command
+_command_offset
+_complete_as_root
+_completion_loader
+_configured_interfaces
+_count_args
+_dvd_devices
+_expand
+_filedir
+_filedir_xspec
+_fstypes
+_get_comp_words_by_ref
+_get_cword
+_get_first_arg
+_get_pword
+_gids
+_have
+_included_ssh_config_files
+_init_completion
+> VIRONMENT}"/packages/
+>
+Display all 1021 possibilities? (y or n)
+!
+./
+2to3
+2to3-3.7
+:
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+[[
+]]
+__expand_tilde_by_ref
+__get_cword_at_cursor_by_ref
+__load_completion
+__ltrim_colon_completions
+__parse_options
+__reassemble_comp_words_by_ref
+_allowed_groups
+_allowed_users
+_available_interfaces
+_cd
+_cd_devices
+_command
+_command_offset
+_complete_as_root
+_completion_loader
+_configured_interfaces
+_count_args
+_dvd_devices
+_expand
+_filedir
+_filedir_xspec
+_fstypes
+_get_comp_words_by_ref
+_get_cword
+_get_first_arg
+_get_pword
+_gids
+_have
+_included_ssh_config_files
+_init_completion
+> ame "$pkg")' already exists in build envir
+onment. Skipping."
+bash: syntax error near unexpected token `)'
+$ fi
+bash: syntax error near unexpected token `fi
+'
+$ done  -typbash: syntax error near unexpected toke
+n `done'
+$ ) 3< "$LOCK_FILE"
+bash: syntax error near unexpected token `)'
+$
+$ (flock -n 3 || true
+> echo "[*] Running container '$CONTAINER_NA
+ME' from image '$IMAGE_NAME'..."
+> if ! docker start "$CONTAINER_NAME" > /dev
+/null 2>&1; then
+>
+Display all 1021 possibilities? (y or n)
+!
+./
+2to3
+2to3-3.7
+:
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+[[
+]]
+__expand_tilde_by_ref
+__get_cword_at_cursor_by_ref
+> g new container..."
+>
+Display all 850 possibilities? (y or n)
+2to3
+2to3-3.7
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+ab
+acyclic
+add-trusted-certificate
+addpart
+addr2line
+ag
+algernon
+>  \
+>
+Display all 850 possibilities? (y or n)
+2to3
+2to3-3.7
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+ab
+acyclic
+add-trusted-certificate
+addpart
+addr2line
+ag
+algernon
+am
+> ame "$CONTAINER_NAME" \
+>
+Display all 850 possibilities? (y or n)
+2to3
+2to3-3.7
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+ab
+acyclic
+add-trusted-certificate
+addpart
+addr2line
+ag
+algernon
+> VIRONMENT}:/home/builder/packages" \
+>
+Display all 850 possibilities? (y or n)
+2to3
+2to3-3.7
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+ab
+acyclic
+add-trusted-certificate
+addpart
+addr2line
+ag
+algernon
+am
+amuFormat.sh
+animate
+annotate
+apachectl
+apk
+apksigner
+applets/
+apr-1-config
+apropos
+apt
+apt-cache
+apt-config
+apt-get
+apt-key
+> AME"
+>
+E>
+Display all 850 possibilities? (y or n)
+2to3
+2to3-3.7
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+ab
+acyclic
+add-trusted-certificate
+addpart
+addr2line
+ag
+algernon
+am
+amuFormat.sh
+animate
+annotate
+apachectl
+apk
+apksigner
+applets/
+apr-1-config
+apropos
+apt
+apt-cache
+apt-config
+apt-get
+apt-key
+apt-mark
+apu-1-config
+apxs
+ar
+arm-linux-androideabi-ar
+arm-linux-androideabi-ld
+arm-linux-androideabi-nm
+arm-linux-androideabi-objdump
+arm-linux-androideabi-ranlib
+arm-linux-androideabi-readelf
+arm-linux-androideabi-strip
+arp
+as
+autossh
+awk
+b2sum
+base32
+base64
+basename
+basenc
+bash
+bc
+bcomps
+bdftogd
+bdiff
+blkdiscard
+blkid
+> e 0 ] && [ "$(id -u)" -ne 1000 ]; then
+>
+Display all 1021 possibilities? (y or n)
+!
+./
+2to3
+2to3-3.7
+:
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+[[
+]]
+__expand_tilde_by_ref
+__get_cword_at_cursor_by_ref
+> ged builder uid/gid... (this may take a wh
+ile)"
+>
+Display all 1021 possibilities? (y or n)
+!
+./
+2to3
+2to3-3.7
+:
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+[[
+]]
+__expand_tilde_by_ref
+__get_cword_at_cursor_by_ref
+__load_completion
+__ltrim_colon_completions
+__parse_options
+__reassemble_comp_words_by_ref
+_allowed_groups
+_allowed_users
+_available_interfaces
+_cd
+_cd_devices
+_command
+_command_offset
+_complete_as_root
+_completion_loader
+_configured_interfaces
+_count_args
+_dvd_devices
+_expand
+_filedir
+_filedir_xspec
+_fstypes
+_get_comp_words_by_ref
+_get_cword
+_get_first_arg
+_get_pword
+_gids
+_have
+_included_ssh_config_files
+_init_completion
+_installed_modules
+_ip_addresses
+_kernel_versions
+_known_hosts
+_known_hosts_real
+_longopt
+_mac_addresses
+_minimal
+_modules
+_ncpus
+_parse_help
+_parse_usage
+_pci_ids
+_pgids
+> TAINER_NAME" sudo chown -R $(id -u) "/home
+/builder"
+>
+Display all 1021 possibilities? (y or n)
+!
+./
+2to3
+2to3-3.7
+:
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+[[
+]]
+__expand_tilde_by_ref
+__get_cword_at_cursor_by_ref
+__load_completion
+__ltrim_colon_completions
+__parse_options
+__reassemble_comp_words_by_ref
+_allowed_groups
+_allowed_users
+_available_interfaces
+_cd
+_cd_devices
+_command
+_command_offset
+_complete_as_root
+_completion_loader
+_configured_interfaces
+_count_args
+_dvd_devices
+_expand
+_filedir
+_filedir_xspec
+_fstypes
+_get_comp_words_by_ref
+_get_cword
+_get_first_arg
+_get_pword
+_gids
+_have
+_included_ssh_config_files
+_init_completion
+_installed_modules
+_ip_addresses
+_kernel_versions
+_known_hosts
+_known_hosts_real
+_longopt
+_mac_addresses
+_minimal
+_modules
+_ncpus
+_parse_help
+_parse_usage
+_pci_ids
+_pgids
+> TAINER_NAME" sudo chown -R $(id -u) /data
+ages" \                         --tty \                         "$IMAGE_NAME"                  if >
+Display all 1021 possibilities? (y or n)
+!
+./
+2to3
+2to3-3.7
+:
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+[[
+]]
+__expand_tilde_by_ref
+__get_cword_at_cursor_by_ref
+__load_completion
+__ltrim_colon_completions
+__parse_options
+__reassemble_comp_words_by_ref
+_allowed_groups
+_allowed_users
+_available_interfaces
+_cd
+_cd_devices
+_command
+_command_offset
+_complete_as_root
+_completion_loader
+_configured_interfaces
+_count_args
+_dvd_devices
+_expand
+_filedir
+_filedir_xspec
+_fstypes
+_get_comp_words_by_ref
+_get_cword
+_get_first_arg
+_get_pword
+_gids
+_have
+_included_ssh_config_files
+_init_completion
+_installed_modules
+_ip_addresses
+_kernel_versions
+_known_hosts
+_known_hosts_real
+_longopt
+_mac_addresses
+_minimal
+_modules
+_ncpus
+_parse_help
+_parse_usage
+_pci_ids
+_pgids
+> TAINER_NAME" sudo usermod -u $(id -u) buil
+der
+>
+Display all 1021 possibilities? (y or n)
+!
+./
+2to3
+2to3-3.7
+:
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+[[
+]]
+__expand_tilde_by_ref
+__get_cword_at_cursor_by_ref
+__load_completion
+__ltrim_colon_completions
+__parse_options
+__reassemble_comp_words_by_ref
+_allowed_groups
+_allowed_users
+_available_interfaces
+_cd
+_cd_devices
+_command
+_command_offset
+_complete_as_root
+_completion_loader
+_configured_interfaces
+_count_args
+_dvd_devices
+_expand
+_filedir
+_filedir_xspec
+_fstypes
+_get_comp_words_by_ref
+_get_cword
+_get_first_arg
+_get_pword
+_gids
+_have
+_included_ssh_config_files
+_init_completion
+_installed_modules
+_ip_addresses
+_kernel_versions
+_known_hosts
+_known_hosts_real
+_longopt
+_mac_addresses
+_minimal
+_modules
+_ncpus
+_parse_help
+_parse_usage
+_pci_ids
+_pgids
+> TAINER_NAME" sudo groupmod -g $(id -g) bui
+lder
+>
+Display all 1021 possibilities? (y or n)
+!
+./
+2to3
+2to3-3.7
+:
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+[[
+]]
+__expand_tilde_by_ref
+__get_cword_at_cursor_by_ref
+__load_completion
+__ltrim_colon_completions
+__parse_options
+__reassemble_comp_words_by_ref
+_allowed_groups
+_allowed_users
+_available_interfaces
+_cd
+_cd_devices
+_command
+_command_offset
+_complete_as_root
+_completion_loader
+_configured_interfaces
+_count_args
+_dvd_devices
+_expand
+_filedir
+_filedir_xspec
+_fstypes
+_get_comp_words_by_ref
+_get_cword
+_get_first_arg
+_get_pword
+_gids
+_have
+_included_ssh_config_files
+_init_completion
+_installed_modules
+_ip_addresses
+_kernel_versions
+_known_hosts
+_known_hosts_real
+_longopt
+_mac_addresses
+_minimal
+_modules
+_ncpus
+_parse_help
+_parse_usage
+_pci_ids
+_pgids
+_pids
+_pnames
+_quote_readline_by_ref
+_realcommand
+_rl_enabled
+_root_command
+_service
+_services
+_shells
+_signals
+_split_longopt
+_sysvdirs
+_terms
+_tilde
+_uids
+_upvar
+_upvars
+_usb_ids
+_user_at_host
+_usergroup
+_userland
+_variables
+_xfunc
+_xinetd_services
+ab
+acyclic
+add-trusted-certificate
+addpart
+>
+>
+Display all 1021 possibilities? (y or n)
+!
+./
+2to3
+2to3-3.7
+:
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+[[
+]]
+__expand_tilde_by_ref
+__get_cword_at_cursor_by_ref
+__load_completion
+__ltrim_colon_completions
+__parse_options
+__reassemble_comp_words_by_ref
+_allowed_groups
+_allowed_users
+_available_interfaces
+_cd
+_cd_devices
+_command
+_command_offset
+_complete_as_root
+_completion_loader
+_configured_interfaces
+> teractive --tty "$CONTAINER_NAME" "$@"
+> else
+>
+Display all 1021 possibilities? (y or n)
+!
+./
+2to3
+2to3-3.7
+:
+GraphicsMagick++-config
+GraphicsMagick-config
+GraphicsMagickWand-config
+Xvnc
+[
+[[
+]]
+__expand_tilde_by_ref
+__get_cword_at_cursor_by_ref
+__load_completion
+__ltrim_colon_completions
+__parse_options
+__reassemble_comp_words_by_ref
+_allowed_groups
+_allowed_users
+_available_interfaces
+_cd
+_cd_devices
+_command
+_command_offset
+_complete_as_root
+_completion_loader
+_configured_interfaces
+> teractive --tty "$CONTAINER_NAME" bash
+INER_NAME> fi
+> ) 3< "$LOCK_FILE"
+bash: /tmp/.termux-x11-builder.lck: No such 
+file or directory
+$  $
+$
+$
+$
+$
+$
+u$
+i$
+l$
+$ <metapackage xmlns:os="http://opensuse.org
+/Standards/One_Click_Install" xmlns="http://
+opensuse.org/Standards/One_Click_Install">
+bash: syntax error near unexpected token `ne
+wline'
+$   <group>
+bash: syntax error near unexpected token `ne
+wline'
+$     <repositories>
+bash: syntax error near unexpected token `ne
+wline'
+$       <repository recommended="true">
+bash: syntax error near unexpected token `ne
+wline'
+$         <name>openSUSE:Leap:15.1:Update</n
+ame>
+bash: syntax error near unexpected token `ne
+wline'
+$         <summary>Online updates for openSU
+SE Leap:15.1</summary>
+bash: syntax error near unexpected token `ne
+wline'
+$         <description>This project is relea
+sing the official updates for openSUSE Leap:
+15.1.</description>
+bash: syntax error near unexpected token `ne
+wline'
+$         <url>http://download.opensuse.org/
+ports/update/leap/15.1/</url>
+bash: syntax error near unexpected token `ne
+wline'
+$       </repository>
+bash: syntax error near unexpected token `ne
+wline'
+$       <repository recommended="true">
+bash: syntax error near unexpected token `ne
+wline'
+$         <name>openSUSE:Leap:15.1:ARM</name
+>
+bash: syntax error near unexpected token `ne
+wline'
+$         <summary></summary>  bash: syntax error near unexpected token `<
+'
+$         <description></description>
+bash: syntax error near unexpected token `<'
+$         <url>http://download.opensuse.org/
+repositories/openSUSE:/Leap:/15.1:/ARM/ports
+/</url>
+bash: syntax error near unexpected token `ne
+wline'
+$       </repository>
+ry>bash: syntax error near unexpected token 
+`newline'
+$       <repository recommended="true">        <repository recommended="true">bash: s
+yntax error near unexpected token `newline'
+$         <name>openSUSE:Leap:15.1:PowerPC</
+name>
+bash: syntax error near unexpected token `ne
+wline'
+$         <summary></summary>
+bash: syntax error near unexpected token `<'
+$         <description></description>
+bash: syntax error near unexpected token `<'
+$         <url>http://download.opensuse.org/
+repositories/openSUSE:/Leap:/15.1:/PowerPC/p
+orts/</url>
+bash: syntax error near unexpected token `ne
+wline'
+$       </repository>
+bash: syntax error near unexpected token `ne
+wline'
+$       <repository recommended="false">
+bash: syntax error near unexpected token `ne
+wline'
+$         <name>openSUSE:Leap:15.1</name>          <name>openSUSE:Leap:15.1:ARM</name>         <summary></summary>         <description></description>         <url>http://download.opensuse.org/re
+positories/openSUSE:/Leap:/15.1:/ARM/ports/<
+/url>       </repository>       <repository recommended="true">
+bash: syntax error near unexpected token `ne
+wline'         <name>openSUSE:Leap:15.1:PowerPC</na
+me>
+$         <summary>openSUSE Leap 15.1</summa
+ry>
+bash: syntax error near unexpected token `ne
+wline'
+$         <description></description>
+bash: syntax error near unexpected token `<'
+$         <url>http://download.opensuse.org/
+distribution/leap/15.1/repo/oss/</url>
+bash: syntax error near unexpected token `ne
+wline'
+$       </repository>
+bash: syntax error near unexpected token `ne
+wline'
+$     </repositories>
+bash: syntax error near unexpected token `ne
+wline'
+$     <software>
+bash: syntax error near unexpected token `ne
+wline'
+$       <item>
+bash: syntax error near unexpected token `ne
+wline'
+$         <name>MozillaThunderbird</name>
+bash: syntax error near unexpected token `ne
+wline'
+$         <summary>The Stand-Alone Mozilla M
+ail Component</summary>
+bash: syntax error near unexpected token `ne
+wline'
+$         <description>Mozilla Thunderbird i
+s a redesign of the Mozilla Mail component. 
+It is
+leap/15.1/repo/oss/</url>      bash: description: No such file or dire
+ctory
+$ written using the XUL user interface langu
+age and designed to be
+No command written found, did you mean:  Command printenv in package coreutils  Command wren in package wren
+$ cross-platform. It is a stand-alone applic
+ation instead of part of the
+zillaThunderbird</name>         <summary>The Stand-Alone cross-platf
+orm.: command not found
+$ Mozilla application suite.</description>
+bash: syntax error near unexpected token `ne
+wline'
+$       </item>
+bash: syntax error near unexpected token `ne
+wline'
+$     </software>
+bash: syntax error near unexpected token `ne
+wline'
+$   </group>
+dbash: syntax error near unexpected token `n
+ewline'
+$ </metapackage>
+bash: syntax error near unexpected token `ne
+wline'
+$
+$
+$
+$
+$
+a$  $
+$
+$ #!/bin/sh
+$ ##
+$ ##  Script for preparing & launching build  environment.
+$ ##
+$ ##  Copyright 2019 Leonid Plyushch <leonid
+.plyushch@gmail.com>
+$ ##
+$ ##  Licensed under the Apache License, Ver
+sion 2.0 (the "License");
+$ ##  you may not use this file except in co
+mpliance with the License.
+$ ##  You may obtain a copy of the License a
+t
+$ ##
+$ ##    http://www.apache.org/licenses/LICEN
+SE-2.0
+$ ##
+$ ##  Unless required by applicable law or a
+greed to in writing, software
+$ ##  distributed under the License is distr
+ibuted on an "AS IS" BASIS,
+$ ##  WITHOUT WARRANTIES OR CONDITIONS OF AN
+Y KIND, either express or implied.
+$ ##  See the License for the specific langu
+age governing permissions and
+$ ##  limitations under the License.
+$ ##
+reed to in writing, softw$
+$ set -e -u
+re
+##  dis$
+$ SCRIPT_NAME=$(basename "$0")
+$ REPOROOT=$(dirname "$(realpath "$0")")
+$
+$ IMAGE_NAME="xeffyr/termux-advanced-builder
+"
+$
+$ LOCK_FILE="/tmp/.termux-x11-builder.lck"
+$ CONTAINER_NAME="termux-x11-buildenv"
+$ BUILD_ENVIRONMENT="termux-packages"
+$
+$ cd "$REPOROOT"
+$
+$ if [ ! -e "$LOCK_FILE" ]; then
+> touch "$LOCK_FILE"
+EPORO> fi
+touch: cannot touch '/tmp/.termux-x11-builde
+r.lck': No such file or directory 
+[Process code 1122334455667788991010 abcdeFGHIJKLMnOpQrStUvWxYz press Enter]
+SlipOpenSUSE/o.o_Closed Issuer Project Security Pulse Com.o.o/YaST/Repos_openSUSE_Leap_42.1_Additional.xml.in
+@super7ramp super7ramp [42.1] Enable available additional repositories 4d63da7 on Mar 27, 2016
+118 lines (117 sloc) 7.69 KB
+<?xml version="1.0"?>
+<!-- Additional Repositories for openSUSE Leap 42.1      These are maintained by Stephan Kulow <coolo@suse.de> and Dominique Leuenberger <dimstar@suse.de> -->
+<metapackage xmlns:os="http://opensuse.org/Standards/One_Click_Install" xmlns="http://opensuse.org/Standards/One_Click_Install">   <group distversion="openSUSE Build Service">     <repositories>       <repository recommended="false" format="rpm-md">         <_name>openSUSE BuildService - LXDE</_name>         <_summary>Latest LXDE release</_summary>         <_description>The LXDE repository in the openSUSE Build Service, which provides you with the unsupported but latest version of the LX desktop environment and software.</_description>         <url>http://download.opensuse.org/repositories/X11:/lxde/openSUSE_Leap_42.1/</url>       </repository>       <repository recommended="false" format="rpm-md">         <_name>openSUSE BuildService - LibreOffice</_name>         <_summary>Latest stable LibreOffice release</_summary>         <_description>Provides you with the latest stable version of LibreOffice, the Office suite that openSUSE uses.</_description>         <!-- Check the version here each time for what is supposed to be set -->         <url>http://download.opensuse.org/repositories/LibreOffice:/5.0/openSUSE_42.1/</url>       </repository>
+LibreOffice repo not yet enabled for Leap 42.1 / dimstar / 20151006 -->       <repository recommended="false" format="rpm-md">         <_name>openSUSE BuildService - Mozilla</_name>         <_summary>Most recent builds of Mozilla Software like Firefox</_summary>         <_description>Containing the latest releases of all Mozilla software, such as the popular Thunderbird (mail client), Firefox and SeaMonkey (web browsers). </_description>         <url>http://download.opensuse.org/repositories/mozilla/openSUSE_Leap_42.1/</url>       </repository>       <repository recommended="false" format="rpm-md">         <_name>openSUSE BuildService - Wine CVS Builds</_name>         <_summary>Snapshots of Wine CVS</_summary>         <_description>Wine is an Open Source implementation of the Windows API, so it allows you to run some Windows applications in openSUSE. This repository provides the latest CVS (development) snapshot packages of Wine.</_description>         <url>http://download.opensuse.org/repositories/Emulators:/Wine/openSUSE_Leap_42.1/</url>       </repository>       <repository recommended="false" format="rpm-md">         <_name>openSUSE BuildService - Games</_name>         <_summary>A collection of action games</_summary>         <_description>Contains several action games including Open Arena (shoot 'em up), Flight Gear (flight simulator) and Torcs (3D racing simulator). </_description>         <url>http://download.opensuse.org/repositories/games/openSUSE_Leap_42.1/</url>       </repository>       <repository recommended="false" format="rpm-md">         <_name>openSUSE BuildService - Virtualization (VirtualBox)</_name>         <_summary>Latest builds of Virtualbox</_summary>         <_description>Provides up-to-date builds of VirtualBox, a general-purpose open-source full virtualizer for x86 hardware.</_description>         <url>http://download.opensuse.org/repositories/Virtualization/openSUSE_Leap_42.1/</url>       </repository>
+<!-- PHP repo not yet enabled for Leap 42.1 / dimstar / 20151006       <repository recommended="false" format="rpm-md">         <_name>openSUSE BuildService - PHP</_name>         <_summary>Latest updates for PHP software</_summary>         <_description>Provides the latest packages and multiple-version builds of PHP software.</_description>         <url>http://download.opensuse.org/repositories/server:/php/openSUSE_Leap_42.1/</url>       </repository>
+PHP repo not yet enabled for Leap 42.1 / dimstar / 20151006 -->       <repository recommended="false" format="rpm-md">         <_name>openSUSE BuildService - Database</_name>         <_summary>Latest updates for database software</_summary>         <_description>Latest updates for database software including Firebird and MySQL.</_description>         <url>http://download.opensuse.org/repositories/server:/database/openSUSE_Leap_42.1/</url>       </repository>       <repository recommended="false" format="yast">         <_name>openSUSE BuildService - KDE:Extra</_name>         <_summary>Community repository for KDE</_summary>         <_description>Provides additional KDE software maintained by the openSUSE KDE community.</_description>         <url>http://download.opensuse.org/repositories/KDE:/Extra/openSUSE_Leap_42.1/</url>       </repository>       <repository recommended="false" format="yast">         <_name>openSUSE BuildService - GNOME:Apps</_name>         <_summary>Backports of GNOME applications</_summary>         <_description>Updates to the GNOME software that is shipped with the distribution (backports).</_description>         <url>http://download.opensuse.org/repositories/GNOME:/Apps/openSUSE_Leap_42.1/</url>       </repository>
+<!-- Mono repo not yet enabled for Leap 42.1 / dimstar / 20151006       <repository recommended="false" format="yast">         <_name>openSUSE BuildService - Mono:Community</_name>         <_summary>Community repository for Mono applications</_summary>         <_description>Updates and Additions of applications written in Mono.</_description>         <url>http://download.opensuse.org/repositories/Mono:/Community/openSUSE_Leap_42.1/</url>       </repository>
+Mono repo not yet enabled for Leap 42.1 / dimstar / 20151006 -->       <repository recommended="false" format="yast">         <_name>openSUSE BuildService - devel:languages:perl</_name>         <_summary>Community repository for Perl modules</_summary>         <_description>Updates and Additions for Perl modules</_description>         <url>http://download.opensuse.org/repositories/devel:/languages:/perl/openSUSE_Leap_42.1/</url>       </repository>       <repository recommended="false" format="yast">         <_name>openSUSE BuildService - devel:languages:python</_name>         <_summary>Community repository for Python modules</_summary>         <_description>Updates and Additions for Python modules</_description>         <url>http://download.opensuse.org/repositories/devel:/languages:/python/openSUSE_Leap_42.1/</url>       </repository>       <repository recommended="false" format="rpm-md">         <_name>openSUSE BuildService - filesystems</_name>         <_summary>Filesystem tools and FUSE-related packages</_summary>         <_description>Filesystem tools and FUSE-related packages.</_description>         <url>http://download.opensuse.org/repositories/filesystems/openSUSE_Leap_42.1/</url>       </repository>       <repository recommended="false" format="rpm-md">         <_name>openSUSE BuildService - Education</_name>         <_summary>Applications for education users</_summary>         <_description>Contains several packages which might be interesting for educational use</_description>         <url>http://download.opensuse.org/repositories/Education/openSUSE_Leap_42.1/</url>       </repository>       <repository recommended="false" format="rpm-md">         <_name>openSUSE BuildService - Java:packages</_name>         <_summary>Bleeding-edge Java packages</_summary>         <_description>Provides uptodate Java packages (Factory backports)</_description>         <url>http://download.opensuse.org/repositories/Java:/packages/openSUSE_Leap_42.1/</url>       </repository>       <repository recommended="false" format="rpm-md">         <_name>openSUSE BuildService - KDE:KDE3</_name>         <_summary>Maintained KDE 3 packages</_summary>         <_description>Provides old KDE for newer openSUSE</_description>         <url>http://download.opensuse.org/repositories/KDE:/KDE3/openSUSE_Leap_42.1/</url>       </repository>     </repositories>   </group>
+</metapackage Security Status API>
+ 
